@@ -1,0 +1,10 @@
+.col {
+  cursor: pointer;
+  width: 120px;
+  height: 120px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
