@@ -40,59 +40,62 @@ export function findBestSquareToClick(board, emptySquares, maxRow, maxCol) {
     }
 
     // Check diogonal
-
-    // Check if item is on the main diogonal
-    count = 0;
-    if (currentCol !== currentRow) return;
-
     let emptySquareDiogonal = {
       row: 0,
       col: 0,
     };
-    // Check left diogonal
-    for (let row = 0, col = 0; row < maxRow && col < maxCol; row++, col++) {
-      if (board[row][col] === "bot") {
-        count++;
-      } else if (!board[row][col]) {
-        emptySquareDiogonal = {
-          row,
-          col,
+    count = 0;
+    // Check if item is on the main diogonal
+    if (currentCol === currentRow) {
+      // Check left diogonal
+      for (let row = 0, col = 0; row < maxRow && col < maxCol; row++, col++) {
+        if (board[row][col] === "bot") {
+          count++;
+        } else if (!board[row][col]) {
+          emptySquareDiogonal = {
+            row,
+            col,
+          };
+        }
+      }
+
+      if (count > maxCount) {
+        maxCount = count;
+        pos = {
+          row: emptySquareDiogonal.row,
+          col: emptySquareDiogonal.col,
         };
       }
-    }
-
-    if (count > maxCount) {
-      maxCount = count;
-      pos = {
-        row: emptySquareDiogonal.row,
-        col: emptySquareDiogonal.col,
-      };
     }
 
     // Check right diogonal
-    count = 0;
-
-    for (
-      let row = 0, col = maxCol - 1;
-      row < maxRow && col >= 0;
-      row++, col--
+    if (
+      currentCol === maxRow - currentRow ||
+      currentRow === maxCol - currentCol
     ) {
-      if (board[row][col] === "bot") {
-        count++;
-      } else if (!board[row][col]) {
-        emptySquareDiogonal = {
-          row,
-          col,
+      count = 0;
+      for (
+        let row = 0, col = maxCol - 1;
+        row < maxRow && col >= 0;
+        row++, col--
+      ) {
+        if (board[row][col] === "bot") {
+          count++;
+        } else if (!board[row][col]) {
+          emptySquareDiogonal = {
+            row,
+            col,
+          };
+        }
+      }
+
+      if (count > maxCount) {
+        maxCount = count;
+        pos = {
+          row: emptySquareDiogonal.row,
+          col: emptySquareDiogonal.col,
         };
       }
-    }
-
-    if (count > maxCount) {
-      maxCount = count;
-      pos = {
-        row: emptySquareDiogonal.row,
-        col: emptySquareDiogonal.col,
-      };
     }
   });
 
@@ -158,62 +161,65 @@ export function checkPlayerNearlyWin(board, emptySquares, maxRow, maxCol) {
 
     // Check diogonal
     // Check if item is on the main diogonal
-    if (currentCol !== currentRow) continue;
 
     count = 0;
     // if (currentCol !== currentRow) break;
 
-    let emptySquareDiogonal = {
-      row: 0,
-      col: 0,
-    };
+    let emptySquareDiogonal = {};
     // Check left diogonal
-    for (let row = 0, col = 0; row < maxRow && col < maxCol; row++, col++) {
-      if (board[row][col] === "player") {
-        count++;
-      } else if (!board[row][col]) {
-        emptySquareDiogonal = {
-          row,
-          col,
-        };
+    if (currentCol === currentRow) {
+      for (let row = 0, col = 0; row < maxRow && col < maxCol; row++, col++) {
+        if (board[row][col] === "player") {
+          count++;
+        } else if (!board[row][col]) {
+          emptySquareDiogonal = {
+            row,
+            col,
+          };
+        }
       }
-    }
 
-    if (count === maxRow - 1) {
-      posResult = {
-        found: true,
-        row: emptySquareDiogonal.row,
-        col: emptySquareDiogonal.col,
-      };
+      if (count === maxRow - 1 && Object.keys(emptySquareDiogonal).length) {
+        posResult = {
+          found: true,
+          row: emptySquareDiogonal.row,
+          col: emptySquareDiogonal.col,
+        };
 
-      break;
+        break;
+      }
     }
 
     // Check right diogonal
-    count = 0;
-    for (
-      let row = 0, col = maxCol - 1;
-      row < maxRow && col >= 0;
-      row++, col--
+    if (
+      currentCol === maxRow - currentRow ||
+      currentRow === maxCol - currentCol
     ) {
-      if (board[row][col] === "player") {
-        count++;
-      } else if (!board[row][col]) {
-        emptySquareDiogonal = {
-          row,
-          col,
-        };
+      count = 0;
+      for (
+        let row = 0, col = maxCol - 1;
+        row < maxRow && col >= 0;
+        row++, col--
+      ) {
+        if (board[row][col] === "player") {
+          count++;
+        } else if (!board[row][col]) {
+          emptySquareDiogonal = {
+            row,
+            col,
+          };
+        }
       }
-    }
 
-    if (count === maxRow - 1) {
-      posResult = {
-        found: true,
-        row: emptySquareDiogonal.row,
-        col: emptySquareDiogonal.col,
-      };
+      if (count === maxRow - 1 && Object.keys(emptySquareDiogonal).length) {
+        posResult = {
+          found: true,
+          row: emptySquareDiogonal.row,
+          col: emptySquareDiogonal.col,
+        };
 
-      break;
+        break;
+      }
     }
   }
 
